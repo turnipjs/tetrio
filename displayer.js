@@ -165,7 +165,15 @@ const blocks = {
 },
       levels = {
         0: [0xffffff, 0x2442e8],
-        2: "apple"
+        1: [0xffffff, 0x17a61b],
+        2: [0xffffff, 0xBA1BBA],
+        3: [0xffffff, 0x2442e8],
+        4: [0xffffff, 0xE10F5A],
+        5: [0xffffff, 0x61F69B],
+        6: [0xffffff, 0xD62A17],
+        7: [0xffffff, 0x7F22EC],
+        8: [0xffffff, 0x2441E8],
+        9: [0xffffff, 0xD62A17],
       };
 
 console.log("displayer loaded");
