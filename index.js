@@ -193,6 +193,8 @@ class Game {
       }
     }
     
+    this.level = 0;
+    
     this.players = {};
   }
   
@@ -254,7 +256,7 @@ class Game {
     
     if (key[1] == "up") {
       let validator = function() {
-        let left, right, bottom;
+        let left, right, bottom; // booleans
         
         // left = 
         
@@ -275,6 +277,10 @@ class Game {
       if ((player.piece.pos[1] + blocks[player.piece.type].bottomOffsets[player.piece.rotation]) < boardHeight) {
         game1.players[key[0]].piece.pos[1]++;
       }
+    }
+    
+    if (key[1] == "l") {
+      game1.level++;
     }
     
     return game1;

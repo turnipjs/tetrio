@@ -162,7 +162,11 @@ const blocks = {
     offsets: [1, 2],
     rightOffsets: [4, 4]
   }
-}
+},
+      levels = {
+        0: [0xffffff, 0x2442e8],
+        2: "apple"
+      };
 
 console.log("displayer loaded");
 
@@ -198,8 +202,8 @@ function updateBoard(game) {
     for (var j = 0; j < arr.length; j++) {
       if (arr[j] == 1) {
         let rectangle = new PIXI.Graphics();
-        rectangle.beginFill(0xffffff);
-        rectangle.lineStyle(.125*scl, 0x2442E8, 1);
+        rectangle.beginFill(levels[game.level % 10][0]);
+        rectangle.lineStyle(.125*scl, levels[game.level % 10][1], 1);
         rectangle.drawRect(j*scl, i*scl, scl - .25, scl - .25);
         rectangle.endFill();
         app.stage.addChild(rectangle);
@@ -215,12 +219,11 @@ function updateBoard(game) {
     console.log(player);
     for (var row = 0; row < 4 /*blocks[player.piece.type.grids[player.piece.rotation]].length*/; row++) {
       for (var block = 0; block < 4; block++) {
-        console.log("checkpoint reached");
         if (blocks[pData.piece.type].grids[pData.piece.rotation][row][block] == 1) {
           console.log("drawing block");
           let rectangle = new PIXI.Graphics();
-          rectangle.beginFill(0xffffff);
-          rectangle.lineStyle(.125*scl, 0x2442E8, 1);
+          rectangle.beginFill(levels[game.level % 10][0]);
+          rectangle.lineStyle(.125*scl, levels[game.level % 10][1], 1);
           rectangle.drawRect((pData.piece.pos[0] + block) * scl, (pData.piece.pos[1] + row) * scl, scl - .25, scl - .25);
           rectangle.endFill();
           app.stage.addChild(rectangle);
