@@ -179,9 +179,15 @@ class Game {
   addPlayer() {
     var player = {};
     player.token = makeToken(5);
+    player.activePiece = newPiece();
     this.players[player.token] = {
-      
-    }
+      activePiece: player.activePiece,
+    };
+    return player;
+  }
+  
+  updateBoard(key) {
+    
   }
 }
 
@@ -202,6 +208,13 @@ function makeArray(x, y) {
   return arr;
 }
 
+function newPiece() {
+  var pieces = "ijlzsot";
+  return pieces.charAt(Math.floor(Math.random() * pieces.length));
+}
+
+var game1 = new Game();
+
 //  ▄         ▄    ▄▄▄▄▄▄▄▄▄▄▄    ▄▄▄▄▄▄▄▄▄▄     ▄▄▄▄▄▄▄▄▄▄▄    ▄▄▄▄▄▄▄▄▄▄▄    ▄               ▄
 // ▐░▌       ▐░▌  ▐░░░░░░░░░░░▌  ▐░░░░░░░░░░▌   ▐░░░░░░░░░░░▌  ▐░░░░░░░░░░░▌  ▐░▌             ▐░▌
 // ▐░▌       ▐░▌  ▐░█▀▀▀▀▀▀▀▀▀   ▐░█▀▀▀▀▀▀▀█░▌  ▐░█▀▀▀▀▀▀▀▀▀   ▐░█▀▀▀▀▀▀▀█░▌   ▐░▌           ▐░▌
@@ -221,25 +234,33 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 //middlewares
 app.get('/', (req, res) => {
-  console.log("User requested: " + __dirname)
+  console.log("User requested: " + __dirname);
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/displayer.js', (req, res) => {
+  console.log("User requested: displayer js file");
+  console.log(__dirname + "displayer.js");
+  res.sendFile(__dirname + "/displayer.js");
+});
+
 io.on('connection', function(socket) {
-  console.log("socket user connected");
+  console.log("socket user " + socket + " connected");
+  client = game1.addPlayer();
+  socket.emit('token', client.token);
+  
   socket.on('disconnect', function() {
     console.log("socket user disconnected");
   });
+  
+  socket.on('keyAction', function(key) {
+    console.log(key);
+    game1.updateBoard(key);
+  });
 })
 
-// app.use('/', express.static(path.join(__dirname, 'public')));
-// 
-// app.get('/play/*/currState', function (req, res, err) {
-// 
-// });
-//start
 http.listen(port, () => {
-  console.log("listening on port: " + port)
+  console.log("listening on port: " + port);
 });
 
 var clients = {};

@@ -5,7 +5,6 @@
     <title>Sample</title>
   </head>
   <body>
-    <canvas id="canvas" width="300" height="300"></canvas>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
@@ -13,14 +12,22 @@
     <script type="text/javascript">
       var socket = io();
       console.log("running");
+      
+      socket.on('token', function(token) {
+        clientToken = token;
+        console.log(clientToken);
+      });
+      
       document.addEventListener('keydown', function(e) {
         console.log("key detected");
         if ((e.which >= 37 && e.which <= 40) || e.which == 32) {
-          var keys = {37:"left", 38:"up", 39:"right", 40:"down", 32:"space"}
+          var keys = {37:"left", 38:"up", 39:"right", 40:"down", 32:"space"};
           console.log(keys[e.which] + " detected");
-          socket.emit('keyAction', keys[e.which]);
+          socket.emit('keyAction', [clientToken, keys[e.which]]);
         }
       });
+      
+      socket.on('boardUpdate', updateBoard(board));
     </script>
     <script src="displayer.js" charset="utf-8"></script>
   </body>
