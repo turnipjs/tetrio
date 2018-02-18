@@ -27,7 +27,8 @@ const blocks = {
     ],
     style: "hollow",
     offsets: [0, 2],
-    rightOffsets: [4, 3]
+    rightOffsets: [4, 3],
+    bottomOffsets: [3, 4]
   },
   j: {
     grids: [
@@ -58,7 +59,8 @@ const blocks = {
     ],
     style: "dark",
     offsets: [1, 1, 1, 2],
-    rightOffsets: [4, 3, 4, 4]
+    rightOffsets: [4, 3, 4, 4],
+    bottomOffsets: [4, 4, 3, 4]
   },
   l: {
     grids: [
@@ -89,7 +91,8 @@ const blocks = {
     ],
     style: "light",
     offsets: [1, 1, 1, 2],
-    rightOffsets: [4, 3, 4, 4]
+    rightOffsets: [4, 3, 4, 4],
+    bottomOffsets: [4, 4, 3, 4]
   },
   o: {
     grids: [
@@ -102,7 +105,8 @@ const blocks = {
     ],
     style: "hollow",
     offsets: [2],
-    rightOffsets: [4]
+    rightOffsets: [4],
+    bottomOffsets: [4]
   },
   s: {
     grids: [
@@ -121,7 +125,8 @@ const blocks = {
     ],
     style: "dark",
     offsets: [1, 2],
-    rightOffsets: [4, 4]
+    rightOffsets: [4, 4],
+    bottomOffsets: [4, 4]
   },
   t: {
     grids: [
@@ -152,7 +157,8 @@ const blocks = {
     ],
     style: "hollow",
     offsets: [1, 1, 1, 2],
-    rightOffsets: [4, 3, 4, 4]
+    rightOffsets: [4, 3, 4, 4],
+    bottomOffsets: [4, 4, 3, 4]
   },
   z: {
     grids: [
@@ -171,7 +177,8 @@ const blocks = {
     ],
     style: "light",
     offsets: [1, 2],
-    rightOffsets: [4, 4]
+    rightOffsets: [4, 4],
+    bottomOffsets: [4, 4]
   }
 },
       boardWidth = 40,
@@ -246,10 +253,27 @@ class Game {
     }
     
     if (key[1] == "up") {
-      if (game1.players[key[0]].piece.rotation < blocks[player.piece.type].grids.length - 1) {
-        game1.players[key[0]].piece.rotation++;
-      } else {
-        game1.players[key[0]].piece.rotation = 0;
+      let validator = function() {
+        let left, right, bottom;
+        
+        // left = 
+        
+        // return left && right && bottom;
+        return true;
+      }
+      
+      if (validator()) {
+        if (game1.players[key[0]].piece.rotation < blocks[player.piece.type].grids.length - 1) {
+          game1.players[key[0]].piece.rotation++;
+        } else {
+          game1.players[key[0]].piece.rotation = 0;
+        }
+      }
+    }
+    
+    if (key[1] == "down") {
+      if ((player.piece.pos[1] + blocks[player.piece.type].bottomOffsets[player.piece.rotation]) < boardHeight) {
+        game1.players[key[0]].piece.pos[1]++;
       }
     }
     
