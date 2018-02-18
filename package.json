@@ -1,0 +1,23 @@
+{
+  "name": "tetrio",
+  "version": "0.1.0",
+  "description": "A .io format cooperative tetris game.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/turnipjs/tetrio.git"
+  },
+  "author": "Charles Moonen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/turnipjs/tetrio/issues"
+  },
+  "homepage": "https://github.com/turnipjs/tetrio#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}
