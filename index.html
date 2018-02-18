@@ -9,12 +9,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+    <script src="displayer.js" charset="utf-8"></script>
     <script type="text/javascript">
       var socket = io();
       console.log("running");
       
-      socket.on('token', function(token) {
-        clientToken = token;
+      socket.on('client', function(client) {
+        console.log("client recieved");
+        clientToken = client.token;
+        console.log(client.token);
+        console.log(client);
         console.log(clientToken);
       });
       
@@ -27,8 +31,7 @@
         }
       });
       
-      socket.on('boardUpdate', updateBoard(board));
+      socket.on('boardUpdate', updateBoard);
     </script>
-    <script src="displayer.js" charset="utf-8"></script>
   </body>
 </html>

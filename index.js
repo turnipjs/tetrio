@@ -26,7 +26,8 @@ const blocks = {
       ]
     ],
     style: "hollow",
-    offsets: [0, 2]
+    offsets: [0, 2],
+    rightOffsets: [4, 3]
   },
   j: {
     grids: [
@@ -56,7 +57,8 @@ const blocks = {
       ]
     ],
     style: "dark",
-    offsets: [1, 1, 1, 2]
+    offsets: [1, 1, 1, 2],
+    rightOffsets: [4, 3, 4, 4]
   },
   l: {
     grids: [
@@ -86,7 +88,8 @@ const blocks = {
       ]
     ],
     style: "light",
-    offsets: [1, 1, 1, 2]
+    offsets: [1, 1, 1, 2],
+    rightOffsets: [4, 3, 4, 4]
   },
   o: {
     grids: [
@@ -98,7 +101,8 @@ const blocks = {
       ]
     ],
     style: "hollow",
-    offsets: [2]
+    offsets: [2],
+    rightOffsets: [4]
   },
   s: {
     grids: [
@@ -116,7 +120,8 @@ const blocks = {
       ]
     ],
     style: "dark",
-    offsets: [1, 2]
+    offsets: [1, 2],
+    rightOffsets: [4, 4]
   },
   t: {
     grids: [
@@ -146,7 +151,8 @@ const blocks = {
       ]
     ],
     style: "hollow",
-    offsets: [1, 1, 1, 2]
+    offsets: [1, 1, 1, 2],
+    rightOffsets: [4, 3, 4, 4]
   },
   z: {
     grids: [
@@ -164,7 +170,8 @@ const blocks = {
       ]
     ],
     style: "light",
-    offsets: [1, 2]
+    offsets: [1, 2],
+    rightOffsets: [4, 4]
   }
 },
       boardWidth = 40,
@@ -173,21 +180,80 @@ const blocks = {
 class Game {
   constructor() {
     this.board = makeArray(boardWidth, boardHeight);
+    for (var i = 0; i < this.board.length; i++) {
+      for (var j = 0; j < this.board[i].length; j++) {
+        this.board[i][j] = 0;
+      }
+    }
+    
     this.players = {};
   }
   
   addPlayer() {
     var player = {};
+    
     player.token = makeToken(5);
-    player.activePiece = newPiece();
-    this.players[player.token] = {
-      activePiece: player.activePiece,
+    player.piece = {
+      type: newPiece(),
+      rotation: 0,
+      pos: [0, 0]
+    }
+    
+    game1.players[player.token] = {
+      piece: player.piece
     };
+    
     return player;
   }
   
-  updateBoard(key) {
+  removePlayer() {
     
+  }
+  
+  updateBoard(key) {
+    let player = game1.players[key[0]];
+    
+    function canMoveLeft() {
+      
+    }
+    
+    function canMoveRight() {
+      
+    }
+    
+    function canRotate() {
+      
+    }
+    
+    function canMoveDown() {
+      
+    }
+    
+    function canDrop() {
+      
+    }
+    
+    if (key[1] == "left") {
+      if ((player.piece.pos[0] + blocks[player.piece.type].offsets[player.piece.rotation]) > 0) {
+        game1.players[key[0]].piece.pos[0]--;
+      }
+    }
+    
+    if (key[1] == "right") {
+      if ((player.piece.pos[0] + blocks[player.piece.type].rightOffsets[player.piece.rotation]) < boardWidth) {
+        game1.players[key[0]].piece.pos[0]++;
+      }
+    }
+    
+    if (key[1] == "up") {
+      if (game1.players[key[0]].piece.rotation < blocks[player.piece.type].grids.length - 1) {
+        game1.players[key[0]].piece.rotation++;
+      } else {
+        game1.players[key[0]].piece.rotation = 0;
+      }
+    }
+    
+    return game1;
   }
 }
 
@@ -201,15 +267,21 @@ function makeToken(length) {
 }
 
 function makeArray(x, y) {
-  var arr = new Array(y), i, l;
+  var arr = new Array(y);
   for(i = 0, l = y; i < l; i++) {
       arr[i] = new Array(x);
+  }
+  for (var i = 0; i < arr.length; i++) {
+    for (var j = 0; j < arr[i].length; j++) {
+      arr[i][j] = 0;
+    }
   }
   return arr;
 }
 
 function newPiece() {
   var pieces = "ijlzsot";
+  console.log(pieces.charAt(Math.floor(Math.random() * pieces.length)));
   return pieces.charAt(Math.floor(Math.random() * pieces.length));
 }
 
@@ -247,7 +319,7 @@ app.get('/displayer.js', (req, res) => {
 io.on('connection', function(socket) {
   console.log("socket user " + socket + " connected");
   client = game1.addPlayer();
-  socket.emit('token', client.token);
+  socket.emit('client', client);
   
   socket.on('disconnect', function() {
     console.log("socket user disconnected");
@@ -255,7 +327,7 @@ io.on('connection', function(socket) {
   
   socket.on('keyAction', function(key) {
     console.log(key);
-    game1.updateBoard(key);
+    socket.emit('boardUpdate', game1.updateBoard(key));
   });
 })
 
