@@ -329,21 +329,17 @@ var game1 = new Game();
 // ▐░░▌     ▐░░▌  ▐░░░░░░░░░░░▌  ▐░░░░░░░░░░▌   ▐░░░░░░░░░░░▌  ▐░▌       ▐░▌          ▐░▌
 //  ▀▀       ▀▀    ▀▀▀▀▀▀▀▀▀▀▀    ▀▀▀▀▀▀▀▀▀▀     ▀▀▀▀▀▀▀▀▀▀▀    ▀         ▀            ▀
 //parameters
-const port = 8000;
+const PORT = 8000;
+
 //initialize
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-//middlewares
-app.get('/', (req, res) => {
-  console.log("User requested: " + __dirname);
-  res.sendFile(__dirname + '/index.html');
-});
 
-app.get('/displayer.js', (req, res) => {
-  console.log("User requested: displayer js file");
-  console.log(__dirname + "displayer.js");
-  res.sendFile(__dirname + "/displayer.js");
+//middlewares
+app.get('/*', (req, res) => {
+  console.log("User requested: " + "/public" + req.path);
+  res.sendFile(__dirname + '/public' + req.path);
 });
 
 io.on('connection', function(socket) {
@@ -359,10 +355,10 @@ io.on('connection', function(socket) {
     console.log(key);
     socket.emit('boardUpdate', game1.updateBoard(key));
   });
-})
+});
 
-http.listen(port, () => {
-  console.log("listening on port: " + port);
+http.listen(PORT, () => {
+  console.log("listening on port: " + PORT);
 });
 
 var clients = {};
